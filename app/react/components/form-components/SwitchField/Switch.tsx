@@ -53,7 +53,7 @@ export function Switch({
         />
         <span className="slider round before:content-['']" data-cy={dataCy} />
       </label>
-      {limitedToBE && <BEFeatureIndicator featureId={featureId} />}
+      {featureId && limitedToBE && <BEFeatureIndicator featureId={featureId} />}
     </>
   );
 }
