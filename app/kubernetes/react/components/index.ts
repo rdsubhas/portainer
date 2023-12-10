@@ -51,9 +51,13 @@ import { withControlledInput } from '@/react-tools/withControlledInput';
 import { EnvironmentVariablesFieldset } from '@@/form-components/EnvironmentVariablesFieldset';
 
 import { applicationsModule } from './applications';
+import { namespacesModule } from './namespaces';
 
 export const ngModule = angular
-  .module('portainer.kubernetes.react.components', [applicationsModule])
+  .module('portainer.kubernetes.react.components', [
+    applicationsModule,
+    namespacesModule,
+  ])
   .component(
     'ingressClassDatatable',
     r2a(IngressClassDatatableAngular, [
