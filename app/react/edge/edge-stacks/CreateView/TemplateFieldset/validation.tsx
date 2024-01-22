@@ -3,7 +3,7 @@ import { mixed, object, SchemaOf, string } from 'yup';
 import { variablesFieldValidation } from '@/react/portainer/custom-templates/components/CustomTemplatesVariablesField';
 import { VariableDefinition } from '@/react/portainer/custom-templates/components/CustomTemplatesVariablesDefinitionField';
 
-import { envVarsFieldsetValidation } from './EnvVarsFieldset';
+import { envVarsFieldsetValidation } from '../../../../portainer/templates/app-templates/DeployFormWidget/EnvVarsFieldset';
 
 export function validation({
   definitions,

@@ -2,7 +2,8 @@ import { FormikErrors } from 'formik';
 
 import { TemplateViewModel } from '@/react/portainer/templates/app-templates/view-model';
 
-import { EnvVarsFieldset } from './EnvVarsFieldset';
+import { EnvVarsFieldset } from '../../../../portainer/templates/app-templates/DeployFormWidget/EnvVarsFieldset';
+
 import { TemplateNote } from './TemplateNote';
 
 export function AppTemplateFieldset({
