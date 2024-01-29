@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 
-import { useAuthorizations, useCurrentUser } from '@/react/hooks/useUser';
+import { useCurrentUser } from '@/react/hooks/useUser';
 
 import { ConfigurationDetails } from './ConfigurationDetails';
 import { InnerTable } from './InnerTable';
@@ -19,7 +19,6 @@ export function SubRow({
   const {
     user: { Username: username },
   } = useCurrentUser();
-  const isEnvironmentAdmin = useAuthorizations(['K8sResourcePoolsW']);
 
   return (
     <tr className={clsx({ 'secondary-body': !item.KubernetesApplications })}>
@@ -35,7 +34,6 @@ export function SubRow({
             <PublishedPorts item={item} />
             <ConfigurationDetails
               item={item}
-              isEnvironmentAdmin={isEnvironmentAdmin}
               areSecretsRestricted={areSecretsRestricted}
               username={username}
             />

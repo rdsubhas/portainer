@@ -8,6 +8,7 @@ import { CreateFromManifestButton } from '@/react/kubernetes/components/CreateFr
 import { useNamespacesQuery } from '@/react/kubernetes/namespaces/queries/useNamespacesQuery';
 import { useEnvironmentId } from '@/react/hooks/useEnvironmentId';
 import { useCurrentEnvironment } from '@/react/hooks/useCurrentEnvironment';
+import { useAuthorizations } from '@/react/hooks/useUser';
 
 import { TableSettingsMenu } from '@@/datatables';
 import { useRepeater } from '@@/datatables/useRepeater';
@@ -54,6 +55,12 @@ export function ApplicationsDatatable({
   const tableState = useKubeStore('kubernetes.applications', 'Name');
   useRepeater(tableState.autoRefreshRate, onRefresh);
 
+  const hasWriteAuthQuery = useAuthorizations(
+    'K8sApplicationsW',
+    undefined,
+    true
+  );
+
   const { setShowSystemResources } = tableState;
 
   useEffect(() => {
@@ -77,6 +84,7 @@ export function ApplicationsDatatable({
       title="Applications"
       titleIcon={BoxIcon}
       isLoading={isLoading}
+      disableSelect={!hasWriteAuthQuery.authorized}
       isRowSelectable={(row) =>
         !namespaceMetaListQuery.data?.[row.original.ResourcePool]?.IsSystem
       }
@@ -90,19 +98,21 @@ export function ApplicationsDatatable({
           }
         />
       )}
-      renderTableActions={(selectedItems) => (
-        <>
-          <DeleteButton
-            disabled={selectedItems.length === 0}
-            confirmMessage="Do you want to remove the selected application(s)?"
-            onConfirmed={() => onRemove(selectedItems)}
-          />
+      renderTableActions={(selectedItems) =>
+        hasWriteAuthQuery.authorized && (
+          <>
+            <DeleteButton
+              disabled={selectedItems.length === 0}
+              confirmMessage="Do you want to remove the selected application(s)?"
+              onConfirmed={() => onRemove(selectedItems)}
+            />
 
-          <AddButton color="secondary">Add with form</AddButton>
+            <AddButton color="secondary">Add with form</AddButton>
 
-          <CreateFromManifestButton />
-        </>
-      )}
+            <CreateFromManifestButton />
+          </>
+        )
+      }
       renderTableSettings={() => (
         <TableSettingsMenu>
           <DefaultDatatableSettings

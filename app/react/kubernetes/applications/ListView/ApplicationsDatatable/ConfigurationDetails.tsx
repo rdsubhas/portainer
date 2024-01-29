@@ -1,22 +1,24 @@
+import { useAuthorizations } from '@/react/hooks/useUser';
+
 import { SensitiveDetails } from './SensitiveDetails';
 import { Application, ConfigKind } from './types';
 
 export function ConfigurationDetails({
   item,
   areSecretsRestricted,
-  isEnvironmentAdmin,
   username,
 }: {
   item: Application;
   areSecretsRestricted: boolean;
-  isEnvironmentAdmin: boolean;
   username: string;
 }) {
+  const isEnvironmentAdminQuery = useAuthorizations(['K8sResourcePoolsW']);
+
   const secrets = item.Configurations?.filter(
     (config) => config.Data && config.Kind === ConfigKind.Secret
   );
 
-  if (!secrets || secrets.length === 0) {
+  if (isEnvironmentAdminQuery.isLoading || !secrets || secrets.length === 0) {
     return null;
   }
 
@@ -47,7 +49,7 @@ export function ConfigurationDetails({
   function canSeeValue(secret: { ConfigurationOwner: string }) {
     return (
       !areSecretsRestricted ||
-      isEnvironmentAdmin ||
+      isEnvironmentAdminQuery.authorized ||
       secret.ConfigurationOwner === username
     );
   }
