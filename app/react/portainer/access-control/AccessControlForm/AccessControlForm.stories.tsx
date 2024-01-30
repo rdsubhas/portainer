@@ -9,6 +9,7 @@ import { withUserProvider } from '@/react/test-utils/withUserProvider';
 import { parseAccessControlFormData } from '../utils';
 
 import { AccessControlForm } from './AccessControlForm';
+import { withTestQueryProvider } from '@/react/test-utils/withTestQuery';
 
 const meta: Meta = {
   title: 'Components/AccessControlForm',
@@ -29,10 +30,10 @@ function Template({ userRole }: Args) {
 
   const [value, setValue] = useState(defaults);
 
-  const Wrapped = withUserProvider(
+  const Wrapped = withTestQueryProvider(withUserProvider(
     AccessControlForm,
     new UserViewModel({ Role: userRole })
-  );
+  ));
 
   return (
     <Wrapped values={value} onChange={setValue} errors={{}} environmentId={1} />
